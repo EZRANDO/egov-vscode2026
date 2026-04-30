@@ -27,3 +27,4 @@
 | ssseft | [3](https://github.com/kenu/egov-vscode2026/issues/3) | Git Hook(Husky)을 활용한 Commit 전 Maven Test 강제화 | open |
 | GithubKangMin | [2](https://github.com/kenu/egov-vscode2026/issues/2) | DB 커넥션 풀(HikariCP) 최적화 설정 가이드 | closed |
 | kenu | [1](https://github.com/kenu/egov-vscode2026/issues/1) | 발표 주제 선정 | closed |
+| kenu | [29](https://github.com/kenu/egov-vscode2026/issues/29) | [전자정부 표준 프레임워크 VS Code 개발 환경 가이드](./egovframe-vscode-guide.md) | open |
