@@ -135,3 +135,9 @@ mvn dependency:tree -Dverbose > tree.txt
 ### 🛠️ 기타 팁
 * **IDE 적극 활용:** IntelliJ의 `Show Dependencies`, `Dependency Analyzer`로 시각적 확인.
 * **Scope 확인:** `compile`, `runtime`, `provided` 범위를 명확히 하여 배포본 관리.
+
+* **캐시 정리:**
+```
+C:\Users\사용자계정\.m2\repository
+~/.m2/repository
+```
