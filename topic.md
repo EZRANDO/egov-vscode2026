@@ -19,7 +19,7 @@
 | Rockernun | [11](https://github.com/kenu/egov-vscode2026/issues/11) | Spring Bean 순환 참조(Circular Dependency) 해결 사례 | open |
 | JBumLee | [10](https://github.com/kenu/egov-vscode2026/issues/10) | Validation 프레임워크 활용: @Valid와 BindingResult 처리 | open |
 | songhyeongyu | [9](https://github.com/kenu/egov-vscode2026/issues/9) | Java Heap Dump 분석: eGovFrame 애플리케이션 메모리 누수 잡기 | open |
-| nippyclouding | [8](https://github.com/kenu/egov-vscode2026/issues/8) | eGovFrame 표준 프레임워크와 MyBatis/JPA 혼용 전략 | open |
+| nippyclouding | [8](https://github.com/kenu/egov-vscode2026/issues/8) | [eGovFrame 표준 프레임워크와 MyBatis/JPA 혼용 전략](./egovframe-vscode-MyBatis-JPA.md) | open |
 | simuneu | [7](https://github.com/kenu/egov-vscode2026/issues/7) | Annotation Processor 문제 해결: Lombok과 MapStruct 연동 시 주의사항 | open |
 | gurum505 | [6](https://github.com/kenu/egov-vscode2026/issues/6) | 의존성 지옥 탈출: mvn dependency:tree로 충돌 해결하기 | open |
 | kenu | [5](https://github.com/kenu/egov-vscode2026/issues/5) | Maven Profile을 활용한 환경별(Dev/Staging/Prod) 설정 분리 | closed |
