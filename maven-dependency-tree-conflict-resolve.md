@@ -82,12 +82,25 @@ org.slf4j:slf4j-api:jar:1.7.10:compile
 
 (com.google.guava:guava:jar:11.0.2:compile - omitted for conflict with 31.1-jre)
 위험도: ⚠️ 매우 높음. Guava는 버전 간 하위 호환성이 깨지는 경우가 많기로 악명이 높습니다. 만약 Hadoop 내부 코드가 Guava 11에만 있던 (지금은 사라진) 메서드를 호출한다면 NoSuchMethodError가 터질 확률이 아주 높습니다.
+버전을 강제로 하나로 맞췄을 때, 너무 낮은 버전을 원하는 라이브러리(Hadoop 등)가 최신 버전에서 에러를 낼 수도 있습니다. * 해결법: 만약 실행 중 NoSuchMethodError가 난다면, 버전 숫자를 조금씩 조정해 보며 모든 라이브러리가 적당히 만족하는 '합의점'을 찾아야 합니다. 보통은 최신 버전을 선택하는 것이 보안과 성능 면에서 유리합니다.
 
 [INFO] |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
 작동 원리: 메이븐(Maven)이 여러 경로에서 listenablefuture 라이브러리를 발견했을 때, "오, 9999.0 버전이 제일 최신이네!"라며 이 빈 껍데기를 선택하게 만듭니다.
 Guava (안에 ListenableFuture 클래스가 있음)
 Standalone ListenableFuture (안에도 ListenableFuture 클래스가 있음)
 
+기능,<dependencyManagement>,그냥 <dependency>
+주요 역할,버전 정책 수립 (지도 역할),실제 라이브러리 도입 (도구 가져오기)
+버전 우선순위,매우 높음 (전이 의존성 제어),최우선 (가장 가까운 정의)
+권장 상황,전이 의존성의 버전을 강제할 때,내 코드에서 직접 import 해서 쓸 때
+
+트리를 내려가며 exclude를 수십 개 다는 게 귀찮다면, 그냥 최상위 pom.xml의 <dependencyManagement>에 딱 한 줄만 적으세요.
+핵심: 트리의 깊이가 10단계든 100단계든 상관없습니다. 관리자(management)가 버전을 명시하는 순간, 모든 하위 계층의 싸움은 그 즉시 종료됩니다.
+전략: tree.txt에서 가장 많이 보이는 말썽꾸러기(Guava, Jackson 등) 몇 개만 골라 최상단에서 버전을 고정해버리면 노란 줄의 80%가 사라집니다.
+
+4.1.90(승자)을 골랐을 때: "아무것도 안 해도 되잖아?"
+4.1.60(패자)을 골랐을 때: "이건 강제로 바꿔야 해!"
+결론부터 말씀드리면, IDE는 "이미 이기고 있는 놈은 굳이 관리(Management)할 필요가 없다"고 제멋대로 판단하고 있기 때문입니다.
 
 
 ### ① 원치 않는 의존성 제거 (`<exclusions>`)
@@ -130,3 +143,11 @@ Standalone ListenableFuture (안에도 ListenableFuture 클래스가 있음)
     * **Dependency Analyzer:** 별도 플러그인이나 내장 기능을 통해 `Conflict`만 따로 필터링 가능.
 * **Spring Boot Parent:** 가급적 직접 버전을 명시하지 말고, 스프링 부트가 관리하는 BOM(Bill of Materials)에 의존하는 것이 가장 안전합니다.
 * **Scope 확인:** `compile`, `runtime`, `provided`, `test` 범위를 명확히 하여 불필요한 라이브러리가 배포본에 포함되지 않게 관리하세요.
+
+관리는 전문가에게" - BOM 활용
+가장 똑똑한 방법은 검증된 버전 세트인 BOM(Bill of Materials)을 가져오는 것입니다.
+원리: 스프링 부트(spring-boot-starter-parent)나 구글 클라우드(libraries-bom) 같은 라이브러리들은 수백 개의 라이브러리 간의 "충돌 없는 버전 조합"을 이미 다 맞춰두었습니다
+
+상황,메이븐의 판단,결과
+"A가 1.0, B가 2.0 원함","""A가 가까우니 1.0을 쓰자""",B가 2.0 전용 기능을 쓰면 프로그램 중단
+Conflict 표시,"""일단 1.0을 골랐지만, B가 위험해!""",개발자가 확인 후 안전한 버전으로 고정 유도
