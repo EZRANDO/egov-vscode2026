@@ -59,21 +59,23 @@
 > 💡 **Tip: 왜 Spring Initializr를 사용하나요?**
 > Eclipse와 달리 VS Code에는 공식적인 'eGovFrame 프로젝트 생성 마법사' 플러그인이 없습니다. 따라서 VS Code 내부의 `Spring Initializr` 확장 기능(명령 팔레트)을 사용해 표준 프로젝트를 먼저 만든 뒤 프레임워크 라이브러리를 얹는 방식을 사용합니다.
 
-1. **프로젝트 초기화:** VS Code의 `Spring Initializr`를 통해 필수 의존성(`Spring Data JPA`, `MyBatis Framework`, 사용 DB 드라이버)을 선택하여 프로젝트를 생성한 후, eGovFrame 전용 핵심 라이브러리(`egovframework.rte.*`)를 `pom.xml` 또는 `build.gradle`에 수동 추가합니다.
-2. **application.yml 설정:**
-   ```yaml
-   spring:
-     datasource:
-       # DB 접속 정보
-     jpa:
-       hibernate:
-         ddl-auto: validate
-       show-sql: true
-   mybatis:
-     mapper-locations: classpath:mapper/**/*.xml
-     type-aliases-package: com.example.project.domain.dto
+1. **프로젝트 초기화:** VS Code의 `Spring Initializr`를 통해 필수 의존성(`Spring Web`, `Spring Data JPA`, `MyBatis Framework`, 사용 DB 드라이버)을 선택하여 프로젝트를 생성한 후, eGovFrame 전용 핵심 라이브러리(`egovframework.rte.*`)를 `pom.xml` 또는 `build.gradle`에 수동 추가합니다.
+2. **application.properties 설정:** JPA와 MyBatis가 같은 DB에 접근하도록 datasource를 하나로 두고, 테이블 생성과 초기 데이터는 `schema.sql`, `data-local.sql`로 명시합니다. 예제에서는 SQLite를 사용하므로 Hibernate SQLite Dialect를 함께 설정합니다.
+   ```properties
+   mybatis.mapper-locations=classpath:mapper/**/*.xml
+
+   spring.datasource.driver-class-name=org.sqlite.JDBC
+   spring.datasource.url=jdbc:sqlite:local.db
+
+   spring.sql.init.mode=always
+   spring.sql.init.schema-locations=classpath:schema.sql
+   spring.sql.init.data-locations=classpath:data-local.sql
+
+   spring.jpa.database-platform=org.hibernate.community.dialect.SQLiteDialect
+   spring.jpa.hibernate.ddl-auto=none
+   spring.jpa.show-sql=true
    ```
-3. **효율적 디버깅:** VS Code의 뛰어난 통합 터미널과 Java Debugger를 활용하여 JPA 쿼리 로그와 MyBatis 쿼리 로그를 동시에 직관적으로 확인하며 개발합니다.
+3. **효율적 디버깅:** VS Code의 통합 터미널에서 `mvn spring-boot:run`으로 실행하고, Java Debugger 또는 `.vscode/launch.json` 실행 구성을 활용하여 JPA 쿼리 로그와 MyBatis 쿼리 로그를 동시에 확인하며 개발합니다.
 
 ---
 
