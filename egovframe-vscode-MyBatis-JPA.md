@@ -41,51 +41,6 @@
 * **이슈:** JPA로 엔티티를 수정한 직후, MyBatis로 해당 데이터를 조회하면 DB에 반영되지 않은 과거 데이터가 조회될 수 있습니다. (MyBatis는 JPA의 1차 캐시를 모름)
 * **해결:** MyBatis 쿼리를 실행하기 직전에 반드시 **JPA 영속성 컨텍스트를 강제로 플러시(`entityManager.flush()`)** 하거나, Spring Data JPA의 `@Modifying(clearAutomatically = true)` 등을 적절히 활용해야 합니다.
 
-**[코드 예시: Service 계층의 트랜잭션 및 동기화 적용]**
-```java
-import com.egovframe.sample.domain.Member;
-import com.egovframe.sample.domain.MemberStatsDto;
-import com.egovframe.sample.repository.MemberMapper;
-import com.egovframe.sample.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-@Service
-@RequiredArgsConstructor
-public class MemberService {
-
-    private final MemberRepository memberRepository;
-    private final MemberMapper memberMapper;
-    private final EntityManager entityManager;
-
-    /**
-     * 가이드 3-1: @Transactional을 선언하면 JpaTransactionManager가 기본으로 작동하며,
-     * MyBatis의 실행도 이 트랜잭션에 완벽하게 동기화(참여)됩니다.
-     */
-    @Transactional
-    public MemberStatsDto updateMemberAndGetStats(Long memberId, String newName) {
-        
-        // 1. [JPA 영역] 객체 지향적인 데이터 수정 (단순 CRUD)
-        Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("사용자 없음"));
-            
-        member.setName(newName); // 더티 체킹으로 인해 UPDATE 쿼리가 예약됨 (1차 캐시에만 존재)
-
-        // ---------------------------------------------------------
-        // 2. ⭐️ [가이드 3-2 핵심] 영속성 컨텍스트 강제 동기화(Flush) ⭐️
-        // 이 코드가 없으면 아래 MyBatis 쿼리는 변경 전(newName이 적용 안 된) 데이터를 읽어옵니다!
-        // ---------------------------------------------------------
-        entityManager.flush(); 
-
-        // 3. [MyBatis 영역] 복잡한 조인/통계 쿼리 실행
-        // 방금 JPA가 플러시한 최신 데이터를 기반으로 통계를 뽑아옵니다. (DTO 반환)
-        return memberMapper.getComplexMemberStats(memberId);
-    }
-}
-```
-
 ### 3-3. DTO(Data Transfer Object) 분리
 * JPA의 Entity를 MyBatis의 파라미터나 결과 타입으로 직접 사용하지 말고, 별도의 DTO를 구성하여 결합도를 낮추는 것이 좋습니다.
 
@@ -99,7 +54,6 @@ public class MemberService {
 * **Extension Pack for Java:** Java 개발의 핵심 (언어 지원, 디버깅, 메이븐/그레이들 지원)
 * **Spring Boot Extension Pack:** Spring 프레임워크 기반인 eGovFrame 프로젝트 설정 및 구동에 필수
 * **MyBatisX:** MyBatis 인터페이스와 XML Mapper 간의 빠른 이동, 코드 자동 완성, 문법 검사 지원
-* **JPA Buddy (선택):** JPA 엔티티 생성, 리포지토리 메서드 자동 완성, DTO 생성 등 강력한 생산성 도구
 
 ### 4-2. 프로젝트 셋업 및 팁
 > 💡 **Tip: 왜 Spring Initializr를 사용하나요?**
