@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,11 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
     private final EntityManager entityManager;
+
+    // 회원 목록 조회
+    public List<Member> getAllMembers() {
+        return memberRepository.findAll();
+    }
 
     // 3-1. Spring Boot는 JPA가 있으면 JpaTransactionManager를 기본 트랜잭션 매니저로 자동 구성, MyBatis도 이 트랜잭션에 함께 참여
     @Transactional
