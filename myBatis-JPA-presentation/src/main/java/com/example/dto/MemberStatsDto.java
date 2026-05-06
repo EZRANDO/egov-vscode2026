@@ -10,4 +10,5 @@ public class MemberStatsDto {
     private String name;
     private int totalLoginCount;
     private String lastAccessDate;
+    private Boolean isDeleted;
 }

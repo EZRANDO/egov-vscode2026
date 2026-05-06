@@ -8,6 +8,7 @@
         SELECT
             m.id,
             m.name,
+            m.is_deleted AS isDeleted,
             COUNT(l.id) AS totalLoginCount,
             MAX(l.access_date) AS lastAccessDate
         FROM members m
@@ -22,7 +23,7 @@
                 AND m.is_deleted = #{isDeleted}
             </if>
         </where>
-        GROUP BY m.id, m.name
+        GROUP BY m.id, m.name, m.is_deleted
     </select>
 
 </mapper>

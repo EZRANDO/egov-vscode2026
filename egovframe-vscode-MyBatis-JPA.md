@@ -75,7 +75,30 @@
    spring.jpa.hibernate.ddl-auto=none
    spring.jpa.show-sql=true
    ```
-3. **효율적 디버깅:** VS Code의 통합 터미널에서 `mvn spring-boot:run`으로 실행하고, Java Debugger 또는 `.vscode/launch.json` 실행 구성을 활용하여 JPA 쿼리 로그와 MyBatis 쿼리 로그를 동시에 확인하며 개발합니다.
+
+### 4-3. 템플릿 코드 실행 및 테스트 방법
+서버를 구동한 뒤, 제공된 API를 통해 JPA와 MyBatis가 어떻게 혼용되어 동작하는지 직접 테스트해 볼 수 있습니다.
+
+1. **서버 실행하기**
+   * VS Code 터미널에서 `cd myBatis-JPA-presentation` 경로로 이동한 후, `mvn spring-boot:run` 명령어를 실행하거나 `DemoApplication.java`에서 `Run`을 클릭하여 서버를 구동합니다. (기본 포트: 8080)
+   * 서버 구동 시 `data-local.sql`에 의해 초기 데이터(1번, 2번 회원)가 자동 세팅됩니다.
+
+2. **API 테스트 (cURL 또는 브라우저 활용)**
+   * **[JPA] 회원 목록 조회 (GET)**
+     * 브라우저에서 `http://localhost:8080/members` 접속
+     * `findAll()`을 통해 초기 회원 목록이 JSON으로 출력되는 것을 확인합니다.
+   * **[JPA + MyBatis] 회원 이름 변경 및 통계 조회 (PATCH)**
+     * 터미널에서 아래 명령어를 실행하여 1번 회원의 이름을 변경해 봅니다.
+       ```bash
+       curl -X PATCH "http://localhost:8080/members/1/name?newName=TestUser"
+       ```
+     * **💡 핵심 확인 포인트:** VS Code 하단 콘솔 창에서 **JPA의 `UPDATE` 쿼리가 먼저 실행(Flush)**된 직후, **MyBatis의 `SELECT` 조인 쿼리가 실행**되는 것을 눈으로 직접 확인하세요!
+   * **[JPA 벌크 + MyBatis] 회원 탈퇴 처리 및 통계 조회 (DELETE)**
+     * 터미널에서 아래 명령어로 2번 회원을 탈퇴(Soft Delete) 처리합니다.
+       ```bash
+       curl -X DELETE "http://localhost:8080/members/2"
+       ```
+     * **💡 핵심 확인 포인트:** 영속성 컨텍스트(1차 캐시)를 우회하여 DB로 다이렉트 `UPDATE`를 쏘는 `@Modifying` 벌크 쿼리가 실행됩니다. 이때 `clearAutomatically = true`, `flushAutomatically = true` 옵션 덕분에, **수동 Flush 호출 없이도** 곧바로 이어지는 MyBatis `SELECT` 쿼리가 최신 데이터(`"isDeleted": true`)를 완벽하게 읽어와 응답하는 것을 확인하세요!
 
 ---
 
