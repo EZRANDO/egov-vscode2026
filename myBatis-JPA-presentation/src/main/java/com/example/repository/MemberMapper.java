@@ -6,7 +6,11 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface MemberMapper {
-    // 3-3. MyBatis는 Entity 대신 조회 목적에 맞춘 DTO로 결과를 매핑해 JPA 도메인과 결합도를 낮춘다. 
+    /*
+     * [Architecture Note 3-3] DTO 분리 원칙
+     * MyBatis 조회 결과는 JPA 엔티티(Entity)가 아닌 화면 요구사항에 맞춘 전용 DTO로 매핑하여, 
+     * JPA 도메인 모델과의 구조적 결합도를 낮추는 것이 권장됩니다.
+     */
     MemberStatsDto getComplexMemberStats(
             @Param("memberId") Long memberId,
             @Param("isDeleted") Boolean isDeleted,
