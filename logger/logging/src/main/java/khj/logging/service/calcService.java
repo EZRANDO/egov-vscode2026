@@ -4,7 +4,7 @@ import khj.logging.exception.customException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class calcService {
+public class CalcService {
     public int add(int a, int b) {
         return a + b;
     }
