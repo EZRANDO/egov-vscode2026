@@ -1,7 +1,7 @@
 package khj.logging.controller;
 
-import khj.logging.exception.customException;
-import khj.logging.service.calcService;
+import khj.logging.exception.CustomException;
+import khj.logging.service.CalcService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class LoggingController {
     @Autowired
-    private calcService calcService;
+    private CalcService calcService;
 
     @GetMapping("/logs/debug")
     public ResponseEntity<String> debug() {
@@ -48,7 +48,7 @@ public class LoggingController {
             int result = calcService.div(a, b);
 //            log.info("quotient result: {}", result);
             return ResponseEntity.ok(result);
-        } catch (customException e) {
+        } catch (CustomException e) {
             log.error("quotient error: {}", e.getMessage());
             return ResponseEntity.badRequest().body("b cannot be zero");
         }

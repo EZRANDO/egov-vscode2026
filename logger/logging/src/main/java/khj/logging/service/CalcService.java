@@ -1,6 +1,6 @@
 package khj.logging.service;
 
-import khj.logging.exception.customException;
+import khj.logging.exception.CustomException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,9 +17,9 @@ public class CalcService {
         return a * b;
     }
 
-    public int div(int a, int b) throws customException {
+    public int div(int a, int b) throws CustomException {
         if (b == 0) {
-            throw new customException("b cannot be zero");
+            throw new CustomException("b cannot be zero");
         }
         return a / b;
     }

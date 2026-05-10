@@ -10,11 +10,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class cachedBodyHttpServletRequest extends HttpServletRequestWrapper {
+public class CachedBodyHttpServletRequest extends HttpServletRequestWrapper {
 
     private final byte[] cachedBody;
 
-    public cachedBodyHttpServletRequest(HttpServletRequest request) throws IOException {
+    public CachedBodyHttpServletRequest(HttpServletRequest request) throws IOException {
         super(request);
         this.cachedBody = request.getInputStream().readAllBytes();
     }

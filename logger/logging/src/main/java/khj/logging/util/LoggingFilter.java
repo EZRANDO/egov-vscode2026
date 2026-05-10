@@ -15,7 +15,7 @@ public class LoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request instanceof HttpServletRequest httpServletRequest) {
             // 요청을 CachedBodyHttpServletRequest로 래핑
-            cachedBodyHttpServletRequest wrappedRequest = new cachedBodyHttpServletRequest(httpServletRequest);
+            CachedBodyHttpServletRequest wrappedRequest = new CachedBodyHttpServletRequest(httpServletRequest);
 
             // URL, 메서드 및 요청 바디 로깅
             String url = wrappedRequest.getRequestURI();
