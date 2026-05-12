@@ -86,15 +86,15 @@ Logback  Log4j2  기타 로깅 프레임워크
 
 ### 개발 환경별 Logback 설정 분리
 
-**방법 1 — Spring Profile 기반으로 설정 파일 분리**
+**— Spring Profile 기반으로 설정 파일 분리**
 ```
 resources/
-├── logback.xml          ← Profile에 따라 분기
+├── logback-spring.xml          ← Profile에 따라 분기
 ├── logback-dev.xml      ← 개발: 콘솔 출력, DEBUG 레벨
 └── logback-prod.xml     ← 운영: 파일 출력, INFO 레벨 + 로그 수집
 ```
 
-**logback.xml 분기 설정 예시**
+**- logback-spring.xml 분기 설정 예시**
 ```xml
 <configuration>
     <springProfile name="dev">
@@ -118,7 +118,6 @@ java -jar app.jar --spring.profiles.active=prod
 # 또는
 java -jar app.jar -Dspring.profiles.active=prod
 ```
-
 ---
 
 ## 5. Logback 설정 파일 작성법
