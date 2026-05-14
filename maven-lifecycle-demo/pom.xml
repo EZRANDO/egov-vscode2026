@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>maven-lifecycle-demo</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Maven Lifecycle Demo</name>
+    <description>Maven 빌드 라이프사이클 학습용 프로젝트</description>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>2.7.14</spring-boot.version>
+        <lombok.version>1.18.30</lombok.version>
+    </properties>
+
+    <dependencies>
+        <!-- Spring Boot Web Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!-- Spring Boot Data JPA -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <!-- H2 Database (개발용) -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.1.214</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Lombok (어노테이션 기반 보일러플레이트 제거) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Spring Boot Test Starter -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- JUnit 5 -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- ========== 1. Maven Compiler Plugin (COMPILE Phase) ========== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- ========== 3. Maven Surefire Plugin (TEST Phase에서 테스트 실행) ========== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M9</version>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/*FailingTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+
+            <!-- ========== 4. Maven JAR Plugin (PACKAGE Phase) ========== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.example.Application</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- ========== 5. Spring Boot Maven Plugin (Package as Fat JAR) ========== -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- ========== 6. Maven Antrun Plugin (각 Phase에서 로그 출력) ========== -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <!-- VALIDATE Phase -->
+                    <execution>
+                        <id>validate-phase</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo>================================================================</echo>
+                                <echo>[VALIDATE Phase] 프로젝트 설정 유효성 검사 시작...</echo>
+                                <echo>- Project: maven-lifecycle-demo</echo>
+                                <echo>- Version: 1.0.0</echo>
+                                <echo>================================================================</echo>
+                            </target>
+                        </configuration>
+                    </execution>
+
+                    <!-- COMPILE Phase -->
+                    <execution>
+                        <id>compile-phase</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo>================================================================</echo>
+                                <echo>[COMPILE Phase] Java 소스 코드 컴파일 완료</echo>
+                                <echo>- Source: src/main/java</echo>
+                                <echo>- Target: target/classes</echo>
+                                <echo>================================================================</echo>
+                            </target>
+                        </configuration>
+                    </execution>
+
+                    <!-- TEST Phase (Before) -->
+                    <execution>
+                        <id>test-phase-start</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo>================================================================</echo>
+                                <echo>[TEST Phase] JUnit 테스트 실행 준비 완료</echo>
+                                <echo>- Test Directory: src/test/java</echo>
+                                <echo>- Default Test Classes: **/*Test.java</echo>
+                                <echo>- Excluded by default: **/*FailingTest.java</echo>
+                                <echo>================================================================</echo>
+                            </target>
+                        </configuration>
+                    </execution>
+
+                    <!-- PACKAGE Phase (After) -->
+                    <execution>
+                        <id>package-phase-end</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo>================================================================</echo>
+                                <echo>[PACKAGE Phase] JAR 파일 생성 완료!</echo>
+                                <echo>- JAR File: target/maven-lifecycle-demo-1.0.0.jar</echo>
+                                <echo>- Location: target/</echo>
+                                <echo>================================================================</echo>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>failure-demo</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>3.0.0-M9</version>
+                        <configuration combine.self="override">
+                            <includes>
+                                <include>**/*FailingTest.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
