@@ -10,7 +10,7 @@
 | geonura | [20](https://github.com/kenu/egov-vscode2026/issues/20) | Spring Batch와 eGovFrame을 활용한 대용량 데이터 처리 | open |
 | cdth12345 | [19](https://github.com/kenu/egov-vscode2026/issues/19) | Validation 프레임워크 활용: @Valid와 BindingResult 처리 | open |
 | AhnHyunju | [18](https://github.com/kenu/egov-vscode2026/issues/18) | Pull Request를 작성하기: Reviewer를 참여시키는 PR 폴더 | open |
-| soohyun1904 | [17](https://github.com/kenu/egov-vscode2026/issues/17) | Spring Boot Executable Jar vs Standard WAR 빌드 차이점 | open |
+| soohyun1904 | [17](https://github.com/kenu/egov-vscode2026/issues/17) | Spring Boot Executable Jar vs Standard WAR 빌드 차이점 | close |
 | EZRANDO | [16](https://github.com/kenu/egov-vscode2026/issues/16) | Maven Lifecycle 완벽 이해: clean부터 deploy까지의 흐름 | open |
 | GyeonghwaKim | [15](https://github.com/kenu/egov-vscode2026/issues/15) | eGovFrame 기반 RESTful API 설계 및 Swagger 연동 | open |
 | romdyfo | [14](https://github.com/kenu/egov-vscode2026/issues/14) | Spring Security와 eGovFrame 권한 관리 시스템 통합 | open |
