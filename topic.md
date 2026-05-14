@@ -1,11 +1,11 @@
 | GitHub ID | 이슈번호 | 주제 | 상태 |
 |---|---|---|---|
 | ParkJunGyu26 | [27](https://github.com/kenu/egov-vscode2026/issues/27) | Spring Batch와 eGovFrame을 활용한 대용량 데이터 처리 | open |
-| iey704 | [26](https://github.com/kenu/egov-vscode2026/issues/26) | Linting & Formatting: Checkstyle과 Prettier로 협업 규칙 자동화하기 | open |
+| iey704 | [26](https://github.com/kenu/egov-vscode2026/issues/26) | [Linting & Formatting: Checkstyle과 Prettier로 협업 규칙 자동화하기](./linting-formatting-checkstyle-prettier.md) | closed |
 | Rockernun | [25](https://github.com/kenu/egov-vscode2026/issues/25) | DB 커넥션 풀(HikariCP) 최적화 설정 가이드 | open |
 | oTAETAEo | [24](https://github.com/kenu/egov-vscode2026/issues/24) | [Multi-Module Project 설계: 공통 모듈과 서비스 모듈 분리 기법](./multi-module.md) | closed |
 | Copilot | [23](https://github.com/kenu/egov-vscode2026/issues/23) | [WIP] Automate collaboration rules with Checkstyle and Prettier | closed |
-| iey704 | [22](https://github.com/kenu/egov-vscode2026/issues/22) | Linting & Formatting: Checkstyle과 Prettier로 협업 규칙 자동화하기 | closed |
+| iey704 | [22](https://github.com/kenu/egov-vscode2026/issues/22) | Linting & Formatting: Checkstyle과 Prettier로 협업 규칙 자동화하기 | open |
 | WinningBean | [21](https://github.com/kenu/egov-vscode2026/issues/21) | Spring Batch와 eGovFrame을 활용한 대용량 데이터 처리 | open |
 | geonura | [20](https://github.com/kenu/egov-vscode2026/issues/20) | Spring Batch와 eGovFrame을 활용한 대용량 데이터 처리 | open |
 | cdth12345 | [19](https://github.com/kenu/egov-vscode2026/issues/19) | Validation 프레임워크 활용: @Valid와 BindingResult 처리 | open |
